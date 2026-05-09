@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class FirestoreService:
     def __init__(self):
-        self.project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "smart-event-operator")
+        self.project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("PROJECT_ID") or "smart-event-operator"
         self.database = os.getenv("FIRESTORE_DATABASE", "(default)")
         self.db = None
         # Use an in-memory fallback for local development if GCP credentials aren't present

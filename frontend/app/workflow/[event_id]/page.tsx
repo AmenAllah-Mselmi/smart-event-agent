@@ -5,6 +5,17 @@ import AgentCard from '@/components/AgentCard';
 import LiveFeed from '@/components/LiveFeed';
 import WorkflowTimeline from '@/components/WorkflowTimeline';
 
+type AgentStatus = 'idle' | 'running' | 'done' | 'error';
+
+interface WorkflowLogEntry {
+  event_id: string;
+  agent_name: string;
+  status: AgentStatus;
+  message: string;
+  timestamp: string;
+  level: string;
+}
+
 export default function WorkflowDashboard({ params }: { params: { event_id: string } }) {
   const router = useRouter();
   const eventId = params.event_id;
@@ -16,12 +27,12 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
     CommunicationAgent: { status: 'idle' as const, lastLog: '' }
   });
   
-  const [logs, setLogs] = useState<any[]>([]);
+  const [logs, setLogs] = useState<WorkflowLogEntry[]>([]);
   const [workflowStatus, setWorkflowStatus] = useState<'pending' | 'running' | 'completed' | 'failed'>('running');
 
   useEffect(() => {
     // Check if event is already completed
-    fetch(`http://localhost:8000/api/events/${eventId}`)
+    fetch(`/api/events/${eventId}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 'completed') {
@@ -30,14 +41,20 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
       })
       .catch(err => console.error(err));
 
-    const eventSource = new EventSource(`http://localhost:8000/api/workflow/${eventId}/stream`);
+    const eventSource = new EventSource(`/api/workflow/${eventId}/stream`);
     
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       
       if (data.event_id !== eventId) return;
       
-      setLogs(prev => [...prev, data]);
+      const workflowLog = {
+        ...data,
+        level: data.level || 'info',
+        timestamp: data.timestamp || new Date().toISOString()
+      } as WorkflowLogEntry;
+
+      setLogs(prev => [...prev, workflowLog]);
       
       if (data.agent_name === 'RouterAgent' && data.status === 'done') {
         setWorkflowStatus('completed');
@@ -49,7 +66,7 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
       setAgents(prev => ({
         ...prev,
         [data.agent_name]: {
-          status: data.status,
+          status: data.status as AgentStatus,
           lastLog: data.message
         }
       }));

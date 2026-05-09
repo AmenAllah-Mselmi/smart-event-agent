@@ -1,6 +1,7 @@
 import json
 import os
 import asyncio
+from datetime import datetime
 from sse_starlette.sse import ServerSentEvent
 
 class PubSubService:
@@ -15,6 +16,7 @@ class PubSubService:
             "status": status,
             "message": message,
             "level": level,
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
         print(f"[{agent_name} | {level}] {message}")
         for queue in self.subscribers:

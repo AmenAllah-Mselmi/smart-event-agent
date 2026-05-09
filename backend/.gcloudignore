@@ -1,0 +1,50 @@
+# This file specifies files that should NOT be uploaded to Google Cloud
+# when using `gcloud builds submit` or `gcloud app deploy`
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Docker files
+.dockerignore
+docker-compose.yml
+
+# Python files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+*.egg
+dist
+build
+.tox
+.coverage
+.pytest_cache
+.mypy_cache
+venv/
+env/
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project files
+.env
+.env.local
+.env.*.local
+README.md
+
+# Tests
+tests/
+test_*.py
+*_test.py

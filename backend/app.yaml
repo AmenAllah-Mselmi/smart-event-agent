@@ -1,0 +1,31 @@
+# app.yaml - Google App Engine Configuration (Alternative to Cloud Run)
+# Use this if you prefer App Engine over Cloud Run
+
+runtime: python311
+
+env: standard
+
+entrypoint: uvicorn main:app --host 0.0.0.0 --port 8080
+
+env_variables:
+  PROJECT_ID: "YOUR_PROJECT_ID"
+  ENVIRONMENT: "production"
+  FIRESTORE_DATABASE: "default"
+
+handlers:
+  - url: /.*
+    script: auto
+
+resources:
+  cpu: 1
+  memory_gb: 2
+  disk_size_gb: 10
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 100
+  min_cpu_utilization: 0.5
+
+service_account: smart-event-agent@PROJECT_ID.iam.gserviceaccount.com
+
+vpc_connector_egress_setting: private-ranges-only

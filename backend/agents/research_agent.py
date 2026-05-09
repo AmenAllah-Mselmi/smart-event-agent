@@ -1,14 +1,13 @@
 import os
 import json
 import asyncio
-from google import genai
 from services.pubsub_service import pubsub_service
 from services.firestore_service import firestore_service
+from utils import create_genai_client
 
 class ResearchPlanningAgent:
     def __init__(self):
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        self.client = genai.Client(api_key=self.api_key) if self.api_key else None
+        self.client = create_genai_client()
         
     async def execute(self, event_id: str, request_data: dict) -> dict:
         await pubsub_service.publish(event_id, "ResearchAgent", "running", "Starting research on trending topics...")

@@ -1,5 +1,3 @@
-import Link from 'react-router-dom';
-// wait, Next.js uses next/link
 import LinkNext from 'next/link';
 
 export default function Home() {
@@ -7,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#050505] flex flex-col items-center justify-center relative overflow-hidden text-white selection:bg-[#7F77DD] selection:text-white">
       {/* Animated background elements */}
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#7F77DD] opacity-20 blur-[120px] mix-blend-screen animate-pulse"></div>
-      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#378ADD] opacity-20 blur-[150px] mix-blend-screen animate-pulse" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#378ADD] opacity-20 blur-[150px] mix-blend-screen animate-pulse"></div>
       
       <div className="z-10 text-center max-w-4xl px-6 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
@@ -21,7 +19,7 @@ export default function Home() {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl font-light">
-          "AI is no longer assisting. <span className="text-white font-medium">It is operating.</span>"
+          &ldquo;AI is no longer assisting. <span className="text-white font-medium">It is operating.</span>&rdquo;
         </p>
         
         <LinkNext href="/create" className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-300 bg-gradient-to-r from-[#7F77DD] to-[#378ADD] rounded-xl hover:shadow-[0_0_40px_rgba(127,119,221,0.4)] hover:-translate-y-1 overflow-hidden">

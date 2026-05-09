@@ -18,7 +18,7 @@ export default function CreateEvent() {
     setLoading(true);
     
     try {
-      const res = await fetch('http://localhost:8000/api/events/create', {
+      const res = await fetch('/api/events/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -55,6 +55,7 @@ export default function CreateEvent() {
               <select 
                 value={formData.event_type}
                 onChange={e => setFormData({...formData, event_type: e.target.value})}
+                title="Event Type"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#7F77DD] transition-all"
               >
                 <option value="DevFest">DevFest</option>
@@ -82,6 +83,7 @@ export default function CreateEvent() {
                 type="number" 
                 required
                 min="0"
+                title="Budget"
                 value={formData.budget}
                 onChange={e => setFormData({...formData, budget: Number(e.target.value)})}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#7F77DD] transition-all"
@@ -93,6 +95,7 @@ export default function CreateEvent() {
               <select 
                 value={formData.audience}
                 onChange={e => setFormData({...formData, audience: e.target.value})}
+                title="Target Audience"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#7F77DD] transition-all"
               >
                 <option value="developers">Developers</option>

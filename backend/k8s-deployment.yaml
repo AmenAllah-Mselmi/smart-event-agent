@@ -1,0 +1,62 @@
+# Kubernetes Deployment Configuration for Google Cloud Run or GKE
+# This is optional - Cloud Run uses this internally, but you can also deploy to GKE
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: smart-event-backend
+  labels:
+    app: smart-event-backend
+spec:
+  template:
+    metadata:
+      labels:
+        app: smart-event-backend
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/PROJECT_ID/smart-event-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PROJECT_ID
+          value: "PROJECT_ID"
+        - name: PORT
+          value: "8080"
+        - name: ENVIRONMENT
+          value: "production"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      serviceAccountName: smart-event-agent
+      timeoutSeconds: 3600
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smart-event-backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: smart-event-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

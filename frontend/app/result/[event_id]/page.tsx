@@ -1,12 +1,38 @@
 "use client";
 import { useEffect, useState } from 'react';
 
+type Venue = {
+  name: string;
+  address: string;
+  capacity: number;
+  price_estimate: number;
+  rating?: number;
+};
+
+type EventPlan = {
+  event_type?: string;
+  city?: string;
+  theme?: string;
+  target_audience?: string;
+  tracks?: string[];
+  agenda?: string[];
+  linkedin_post?: string;
+  twitter_post?: string;
+  email_html?: string;
+  budget?: number;
+  estimated_attendance?: number;
+  format?: string;
+  meet_link?: string;
+  venues?: Venue[];
+  detail?: string;
+};
+
 export default function ResultPlan({ params }: { params: { event_id: string } }) {
-  const [plan, setPlan] = useState<any>(null);
+  const [plan, setPlan] = useState<EventPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/events/${params.event_id}/plan`)
+    fetch(`/api/events/${params.event_id}/plan`)
       .then(res => res.json())
       .then(data => {
         setPlan(data);
@@ -89,7 +115,7 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
                 <div>
                   <div className="flex justify-between mb-2">
                     <h3 className="text-sm text-gray-400 uppercase tracking-wider print:text-gray-500">LinkedIn Post</h3>
-                    <button onClick={() => navigator.clipboard.writeText(plan.linkedin_post)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy</button>
+                    <button onClick={() => plan.linkedin_post && navigator.clipboard.writeText(plan.linkedin_post)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy</button>
                   </div>
                   <div className="bg-gray-800 p-4 rounded-lg italic text-gray-300 print:bg-gray-50 print:text-black">
                     {plan.linkedin_post}
@@ -99,7 +125,7 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
                 <div>
                   <div className="flex justify-between mb-2">
                     <h3 className="text-sm text-gray-400 uppercase tracking-wider print:text-gray-500">Twitter Post</h3>
-                    <button onClick={() => navigator.clipboard.writeText(plan.twitter_post)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy</button>
+                    <button onClick={() => plan.twitter_post && navigator.clipboard.writeText(plan.twitter_post)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy</button>
                   </div>
                   <div className="bg-gray-800 p-4 rounded-lg italic text-gray-300 print:bg-gray-50 print:text-black">
                     {plan.twitter_post}
@@ -109,7 +135,7 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
                 <div>
                   <div className="flex justify-between mb-2">
                     <h3 className="text-sm text-gray-400 uppercase tracking-wider print:text-gray-500">Email Invitation</h3>
-                    <button onClick={() => navigator.clipboard.writeText(plan.email_html)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy HTML</button>
+                    <button onClick={() => plan.email_html && navigator.clipboard.writeText(plan.email_html)} className="text-[#378ADD] text-sm hover:underline print:hidden">Copy HTML</button>
                   </div>
                   <div className="bg-white text-black p-6 rounded-lg border border-gray-200" dangerouslySetInnerHTML={{ __html: plan.email_html || '' }} />
                 </div>
@@ -150,7 +176,7 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
               <section className="bg-gray-900 border border-gray-800 rounded-xl p-6 print:border-gray-300 print:bg-white">
                 <h2 className="text-xl font-semibold mb-4 text-[#7F77DD] print:text-black">Recommended Venues</h2>
                 <div className="space-y-4">
-                  {plan.venues.map((venue: any, i: number) => (
+                  {plan.venues.map((venue: Venue, i: number) => (
                     <div key={i} className="bg-gray-800 rounded-lg p-4 border border-gray-700 print:border-gray-300 print:bg-gray-50">
                       <h4 className="font-semibold text-white print:text-black">{venue.name}</h4>
                       <p className="text-sm text-gray-400 mb-2">{venue.address}</p>

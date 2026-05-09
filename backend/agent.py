@@ -1,8 +1,7 @@
 import os
 from typing import Dict, Any
-from google import genai
 from tools import adk_tools
-from utils import get_current_timestamp
+from utils import get_current_timestamp, create_genai_client
 
 class EventOperatorAgent:
     """
@@ -10,8 +9,7 @@ class EventOperatorAgent:
     operate the event planning workflow.
     """
     def __init__(self):
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        self.client = genai.Client(api_key=self.api_key) if self.api_key else None
+        self.client = create_genai_client()
         
         # Load skills
         skills_path = os.path.join(os.path.dirname(__file__), "skills.md")
@@ -25,7 +23,7 @@ class EventOperatorAgent:
         SequentialAgent or LoopAgent. Here, it is wrapped as the core Operator Agent.
         """
         if not self.client:
-            return "Error: GEMINI_API_KEY not configured."
+            return "Error: Gemini client not configured."
             
         prompt = f"""
         User Request: Plan an event with the following parameters:
