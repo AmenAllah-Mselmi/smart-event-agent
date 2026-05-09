@@ -32,7 +32,7 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
 
   useEffect(() => {
     // Check if event is already completed
-    fetch(`/api/events/${eventId}`)
+    fetch(`http://localhost:8000/api/events/${eventId}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 'completed') {
@@ -41,7 +41,7 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
       })
       .catch(err => console.error(err));
 
-    const eventSource = new EventSource(`/api/workflow/${eventId}/stream`);
+    const eventSource = new EventSource(`http://localhost:8000/api/workflow/${eventId}/stream`);
     
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -92,7 +92,7 @@ export default function WorkflowDashboard({ params }: { params: { event_id: stri
           </div>
         </header>
 
-        <WorkflowTimeline status={workflowStatus} />
+        <WorkflowTimeline status={workflowStatus} agents={agents} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <AgentCard name="Router" status={agents.RouterAgent.status} lastLog={agents.RouterAgent.lastLog} />

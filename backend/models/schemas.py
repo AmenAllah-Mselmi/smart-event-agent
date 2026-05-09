@@ -21,6 +21,7 @@ class EventPlan(BaseModel):
     agenda: Optional[List[str]] = None
     tracks: Optional[List[str]] = None
     target_audience: Optional[str] = None
+    gde_proposals: Optional[List[str]] = None
     venues: Optional[List[Dict[str, Any]]] = None
     estimated_attendance: Optional[int] = None
     budget_breakdown: Optional[Dict[str, float]] = None

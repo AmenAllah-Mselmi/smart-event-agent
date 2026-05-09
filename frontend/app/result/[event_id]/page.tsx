@@ -25,6 +25,7 @@ type EventPlan = {
   meet_link?: string;
   venues?: Venue[];
   detail?: string;
+  gde_proposals?: string[];
 };
 
 export default function ResultPlan({ params }: { params: { event_id: string } }) {
@@ -32,7 +33,7 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/events/${params.event_id}/plan`)
+    fetch(`http://localhost:8000/api/events/${params.event_id}/plan`)
       .then(res => res.json())
       .then(data => {
         setPlan(data);
@@ -91,6 +92,19 @@ export default function ResultPlan({ params }: { params: { event_id: string } })
                     ))}
                   </div>
                 </div>
+                {plan.gde_proposals && plan.gde_proposals.length > 0 && (
+                  <div className="pt-4">
+                    <h3 className="text-sm text-gray-400 uppercase tracking-wider mb-2 print:text-gray-500">Proposed Experts (GDEs)</h3>
+                    <ul className="list-none space-y-1">
+                      {plan.gde_proposals.map((gde, i) => (
+                        <li key={i} className="flex items-center gap-2">
+                          <span className="text-[#378ADD]">✨</span>
+                          <span className="text-gray-200">{gde}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </section>
 

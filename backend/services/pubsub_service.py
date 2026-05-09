@@ -28,7 +28,7 @@ class PubSubService:
         try:
             while True:
                 data = await queue.get()
-                yield ServerSentEvent(data=json.dumps(data))
+                yield {"data": json.dumps(data)}
         finally:
             self.subscribers.remove(queue)
 

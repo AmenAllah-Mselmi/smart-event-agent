@@ -1,5 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from fastapi.responses import StreamingResponse
+from sse_starlette.sse import EventSourceResponse
 from models.schemas import EventRequest, EventPlan
 from services.firestore_service import firestore_service
 from services.pubsub_service import pubsub_service
@@ -26,7 +27,7 @@ async def get_event(event_id: str):
 
 @router.get("/workflow/{event_id}/stream")
 async def stream_workflow(event_id: str):
-    return StreamingResponse(pubsub_service.subscribe(), media_type="text/event-stream")
+    return EventSourceResponse(pubsub_service.subscribe())
 
 @router.get("/agents/status")
 async def agents_status():

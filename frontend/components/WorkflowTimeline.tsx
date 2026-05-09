@@ -2,14 +2,18 @@ import React from 'react';
 
 interface TimelineProps {
   status: 'pending' | 'running' | 'completed' | 'failed';
+  agents?: any;
 }
 
-export default function WorkflowTimeline({ status }: TimelineProps) {
+export default function WorkflowTimeline({ status, agents }: TimelineProps) {
+  const isCommsActive = status === 'completed' || agents?.CommunicationAgent?.status === 'running' || agents?.CommunicationAgent?.status === 'done';
+  const isFinalPlan = status === 'completed';
+
   const steps = [
     { name: 'Research & Planning', active: status !== 'pending' },
     { name: 'Logistics & Venues', active: status !== 'pending' },
-    { name: 'Communications', active: status === 'completed' || (status === 'running' && false) }, // Simplified for visual
-    { name: 'Final Plan', active: status === 'completed' }
+    { name: 'Communications', active: isCommsActive },
+    { name: 'Final Plan', active: isFinalPlan }
   ];
 
   return (
@@ -18,7 +22,7 @@ export default function WorkflowTimeline({ status }: TimelineProps) {
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-800 z-0"></div>
         <div 
           className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#7F77DD] to-[#378ADD] z-0 transition-all duration-1000 ease-in-out"
-          style={{ width: status === 'completed' ? '100%' : status === 'running' ? '50%' : '0%' }}
+          style={{ width: isFinalPlan ? '100%' : isCommsActive ? '75%' : status === 'running' ? '50%' : '0%' }}
         ></div>
         
         {steps.map((step, index) => (

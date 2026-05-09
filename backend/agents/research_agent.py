@@ -29,9 +29,10 @@ class ResearchPlanningAgent:
         
         Based on current tech trends, generate a JSON response with:
         - theme: A catchy theme for the event.
-        - agenda: A list of 3-4 agenda items.
+        - agenda: A detailed list of 5-6 agenda items, each MUST include the exact start and end times (e.g., '09:00 AM - 10:00 AM: Keynote').
         - tracks: A list of 2-3 tracks (e.g., AI, Web, Cloud).
         - target_audience: A specific description of the target audience.
+        - gde_proposals: A list of 3 proposed Google Developer Experts (GDEs) relevant to the theme who could be invited as speakers.
         
         Return exactly valid JSON.
         """
@@ -52,16 +53,24 @@ class ResearchPlanningAgent:
                 # Mock response if no API key
                 result = {
                     "theme": f"Building AI Agents with Gemini in {city}",
-                    "agenda": ["Opening keynote", "Hands-on ADK workshop", "Demo showcase"],
+                    "agenda": [
+                        "09:00 AM - 10:00 AM: Registration & Breakfast",
+                        "10:00 AM - 11:00 AM: Opening Keynote on Agentic AI",
+                        "11:00 AM - 12:30 PM: Hands-on ADK workshop",
+                        "12:30 PM - 02:00 PM: Lunch & Networking",
+                        "02:00 PM - 03:00 PM: Demo showcase"
+                    ],
                     "tracks": ["AI", "Cloud", "Web"],
-                    "target_audience": f"{audience} interested in generative AI"
+                    "target_audience": f"{audience} interested in generative AI",
+                    "gde_proposals": ["Sayak Paul (Machine Learning)", "Wietse Venema (Google Cloud)", "Wassim Chegham (Web)"]
                 }
         except Exception as e:
             result = {
                 "theme": f"Future of Tech in {city}",
-                "agenda": ["Keynote", "Workshop", "Networking"],
+                "agenda": ["09:00 AM - 10:00 AM: Keynote", "10:00 AM - 12:00 PM: Workshop", "12:00 PM - 01:00 PM: Networking"],
                 "tracks": ["General Tech"],
                 "target_audience": audience,
+                "gde_proposals": ["Local Expert 1", "Local Expert 2"],
                 "error": str(e)
             }
             
