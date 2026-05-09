@@ -1,0 +1,21 @@
+[project]
+name = "smart-event-operator-backend"
+version = "0.1.0"
+description = "Smart Community Event AI Operator Backend"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "google-adk",
+    "google-genai",
+    "google-cloud-firestore",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "sse-starlette",
+    "pydantic-settings",
+    "python-dotenv",
+    "google-cloud-pubsub"
+]
